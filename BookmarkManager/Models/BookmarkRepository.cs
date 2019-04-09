@@ -13,17 +13,15 @@ namespace BookmarkManager.Models
     {
         Bookmark GetBookmark(int id);
  
-        Bookmark CreateBookmark(User user);
+        Bookmark CreateBookmark(Bookmark bookmark, string username);
 
-        HttpStatusCode EditBookmark(int id);
-
-        HttpStatusCode SaveBookmark();
+        HttpStatusCode EditBookmark(int id, Bookmark bookmark, string username);
 
         HttpStatusCode DeleteBookmark(int id);
 
         Bookmark GetBookmark(string title);
 
-        IEnumerable<User> GetBookmarks(User user);
+        IEnumerable<User> GetBookmarkedUsers(User user);
 
 
     }
@@ -54,7 +52,7 @@ namespace BookmarkManager.Models
 
         [JwtAuthentication]
         [HttpPost]
-        public Bookmark CreateBookmark(User user)
+        public Bookmark CreateBookmark(Bookmark bookmark, string username)//
         {
             //link, title, date, author, username?
 
@@ -63,18 +61,12 @@ namespace BookmarkManager.Models
 
         [JwtAuthentication]
         [HttpPut]
-        public HttpStatusCode EditBookmark(int id)
+        public HttpStatusCode EditBookmark(int id, Bookmark bookmark, string username)//
         {
             //pass info to edit? or bookmark as well
 
             //link, title, date, author, username?
 
-            return HttpStatusCode.Accepted;
-        }
-
-        //redundant?
-        public HttpStatusCode SaveBookmark()
-        {
             return HttpStatusCode.Accepted;
         }
 
@@ -88,6 +80,8 @@ namespace BookmarkManager.Models
                 throw new HttpResponseException(HttpStatusCode.Conflict);
 
             _db.Bookmarks.Remove(bookmark);
+
+            _db.SaveChanges();
 
             return HttpStatusCode.Accepted;
         }
@@ -106,7 +100,7 @@ namespace BookmarkManager.Models
 
         [AllowAnonymous]
         [HttpGet]
-        public IEnumerable<User> GetBookmarks(User user)
+        public IEnumerable<User> GetBookmarkedUsers(User user)
         {
             //change to List<Bookmark> and do a where
             return new List<User>();

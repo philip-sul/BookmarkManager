@@ -23,19 +23,14 @@ namespace BookmarkManager.Controllers
             return _bookmarkRepository.GetBookmark(id);
         }
 
-        public Bookmark CreateBookmark(User user)
+        public Bookmark CreateBookmark(Bookmark bookmark, string username)
         {
-            return _bookmarkRepository.CreateBookmark(user);
+            return _bookmarkRepository.CreateBookmark(bookmark, username);
         }
 
-        public HttpStatusCode EditBookmark(int id)
+        public HttpStatusCode EditBookmark(int id, Bookmark bookmark, string username)
         {
-            return _bookmarkRepository.EditBookmark(id);
-        }
-
-        public HttpStatusCode SaveBookmark()
-        {
-            return _bookmarkRepository.SaveBookmark();
+            return _bookmarkRepository.EditBookmark(id, bookmark, username);
         }
 
         public HttpStatusCode DeleteBookmark(int id)
@@ -48,9 +43,9 @@ namespace BookmarkManager.Controllers
             return _bookmarkRepository.GetBookmark(title);
         }
 
-        public IEnumerable<User> GetBookmarks(User user)
+        public IEnumerable<User> GetBookmarkedUsers(User user)
         {
-            return _bookmarkRepository.GetBookmarks(user);
+            return _bookmarkRepository.GetBookmarkedUsers(user);
         }
 
     }

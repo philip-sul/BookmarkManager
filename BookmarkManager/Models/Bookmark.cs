@@ -24,5 +24,10 @@ namespace BookmarkManager.Models
 
         public IList<User> Favourites { get; set; }
 
+        public Bookmark()
+        {
+            Favourites = new List<User>();
+        }
+
     }
 }

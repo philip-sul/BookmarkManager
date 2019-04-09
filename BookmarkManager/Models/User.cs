@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace BookmarkManager.Models
 {
@@ -14,6 +15,7 @@ namespace BookmarkManager.Models
         [Required]
         public string Username { get; set; }
 
+        [JsonIgnore]//don't include passwords in json output
         [Required]
         public string UserPassword { get; set; }
 
@@ -23,5 +25,14 @@ namespace BookmarkManager.Models
         public IList<Bookmark> Bookmarks { get; set; }
 
         public IList<Bookmark> FavouriteBookmarks { get; set; }
+
+        public User()
+        {
+            Bookmarks = new List<Bookmark>();
+
+            FavouriteBookmarks = new List<Bookmark>();
+
+        }
+
     }
 }
