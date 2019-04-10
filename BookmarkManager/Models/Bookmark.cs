@@ -20,7 +20,7 @@ namespace BookmarkManager.Models
         public DateTime Date { get; set; }
 
         [Required]
-        public User Author { get; set; }
+        public int AuthorId { get; set; }
 
         public IList<User> Favourites { get; set; }
 

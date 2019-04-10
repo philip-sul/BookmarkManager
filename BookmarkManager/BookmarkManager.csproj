@@ -113,16 +113,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="JwtManager.cs" />
-    <Compile Include="Migrations\201904080129000_initialDB.cs" />
-    <Compile Include="Migrations\201904080129000_initialDB.Designer.cs">
-      <DependentUpon>201904080129000_initialDB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904090259238_constructorUpdate.cs" />
-    <Compile Include="Migrations\201904090259238_constructorUpdate.Designer.cs">
-      <DependentUpon>201904090259238_constructorUpdate.cs</DependentUpon>
+    <Compile Include="Migrations\201904102145524_initaldb.cs" />
+    <Compile Include="Migrations\201904102145524_initaldb.Designer.cs">
+      <DependentUpon>201904102145524_initaldb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Bookmark.cs" />
+    <Compile Include="Models\BookmarkClasses.cs" />
     <Compile Include="Models\BookmarkRepository.cs" />
     <Compile Include="Models\DatabaseModel.cs" />
     <Compile Include="Models\User.cs" />
@@ -141,11 +138,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904080129000_initialDB.resx">
-      <DependentUpon>201904080129000_initialDB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904090259238_constructorUpdate.resx">
-      <DependentUpon>201904090259238_constructorUpdate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904102145524_initaldb.resx">
+      <DependentUpon>201904102145524_initaldb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BookmarkManager.Models;
+using Lab6.Filters;
 
 namespace BookmarkManager.Controllers
 {
@@ -17,35 +18,46 @@ namespace BookmarkManager.Controllers
             _bookmarkRepository = new BookmarkRepository();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public Bookmark GetBookmark(int id)
         {
             return _bookmarkRepository.GetBookmark(id);
         }
 
-        public Bookmark CreateBookmark(Bookmark bookmark, string username)
+        //[JwtAuthentication]
+        [HttpPost]
+        public Bookmark CreateBookmark(BookmarkClass1 content)
         {
-            return _bookmarkRepository.CreateBookmark(bookmark, username);
+            return _bookmarkRepository.CreateBookmark(content.Bookmark1, content.Username1);
         }
 
+        //[JwtAuthentication]
+        [HttpPut]
         public HttpStatusCode EditBookmark(int id, Bookmark bookmark, string username)
         {
             return _bookmarkRepository.EditBookmark(id, bookmark, username);
         }
 
+        //[JwtAuthentication]
+        [HttpDelete]
         public HttpStatusCode DeleteBookmark(int id)
         {
             return _bookmarkRepository.DeleteBookmark(id);
         }
 
+        [AllowAnonymous]
+        [HttpGet]
         public Bookmark GetBookmark(string title)
         {
             return _bookmarkRepository.GetBookmark(title);
         }
 
-        public IEnumerable<User> GetBookmarkedUsers(User user)
+        [AllowAnonymous]
+        [HttpGet]
+        public IEnumerable<User> GetBookmarkedUsers(int id)
         {
-            return _bookmarkRepository.GetBookmarkedUsers(user);
+            return _bookmarkRepository.GetBookmarkedUsers(id);
         }
 
     }

@@ -7,13 +7,13 @@ namespace BookmarkManager.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class constructorUpdate : IMigrationMetadata
+    public sealed partial class initaldb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(constructorUpdate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initaldb));
         
         string IMigrationMetadata.Id
         {
-            get { return "201904090259238_constructorUpdate"; }
+            get { return "201904102145524_initaldb"; }
         }
         
         string IMigrationMetadata.Source

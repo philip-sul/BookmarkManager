@@ -21,7 +21,7 @@ namespace BookmarkManager.Models
 
         Bookmark GetBookmark(string title);
 
-        IEnumerable<User> GetBookmarkedUsers(User user);
+        IEnumerable<User> GetBookmarkedUsers(int id);
 
 
     }
@@ -35,8 +35,6 @@ namespace BookmarkManager.Models
             _db = new DatabaseModel();
         }
 
-        [AllowAnonymous]
-        [HttpGet]
         public Bookmark GetBookmark(int id)
         {
             if (id == null)
@@ -50,28 +48,51 @@ namespace BookmarkManager.Models
             return bookmark;
         }
 
-        [JwtAuthentication]
-        [HttpPost]
         public Bookmark CreateBookmark(Bookmark bookmark, string username)//
         {
             //link, title, date, author, username?
+            if(bookmark == null)
+                throw new HttpResponseException(HttpStatusCode.Conflict);
 
-            return new Bookmark();
+            _db.Bookmarks.Add(bookmark);
+
+            var user =_db.Users.SingleOrDefault(x => x.Username.ToLower() == username.ToLower());
+
+            if(user == null)
+                throw new HttpRequestException("Username not found");
+
+            user.Bookmarks.Add(bookmark);
+
+            _db.SaveChanges();
+
+            return bookmark;
         }
 
-        [JwtAuthentication]
-        [HttpPut]
         public HttpStatusCode EditBookmark(int id, Bookmark bookmark, string username)//
         {
             //pass info to edit? or bookmark as well
 
             //link, title, date, author, username?
 
+            var bookmarkToChange =_db.Bookmarks.Find(id);
+
+            if (bookmarkToChange == null)
+                throw new HttpResponseException(HttpStatusCode.Conflict);
+
+            bookmarkToChange.Link = bookmark.Link;
+
+            if(bookmarkToChange.Title != null)
+                bookmarkToChange.Title = bookmark.Title;
+
+            bookmarkToChange.Date = bookmark.Date;
+
+            bookmarkToChange.AuthorId = bookmark.AuthorId;
+
+            _db.SaveChanges();
+
             return HttpStatusCode.Accepted;
         }
 
-        [JwtAuthentication]
-        [HttpDelete]
         public HttpStatusCode DeleteBookmark(int id)
         {
             var bookmark = _db.Bookmarks.Find(id);
@@ -86,8 +107,6 @@ namespace BookmarkManager.Models
             return HttpStatusCode.Accepted;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
         public Bookmark GetBookmark(string title)
         {
             var bookmark = _db.Bookmarks.SingleOrDefault(x => x.Title.ToLower() == title.ToLower());
@@ -98,12 +117,17 @@ namespace BookmarkManager.Models
             return new Bookmark();
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public IEnumerable<User> GetBookmarkedUsers(User user)
+        public IEnumerable<User> GetBookmarkedUsers(int id)//
         {
-            //change to List<Bookmark> and do a where
-            return new List<User>();
+
+            var list = _db.Bookmarks.Find(id).Favourites;
+
+
+            if(list == null)
+                throw new HttpRequestException("Id not found");
+
+            return list;
+
         }
 
     }
