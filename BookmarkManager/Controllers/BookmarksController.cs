@@ -27,16 +27,16 @@ namespace BookmarkManager.Controllers
 
         //[JwtAuthentication]
         [HttpPost]
-        public Bookmark CreateBookmark(BookmarkClass1 content)
+        public Bookmark CreateBookmark(CreateJson content)
         {
-            return _bookmarkRepository.CreateBookmark(content.Bookmark1, content.Username1);
+            return _bookmarkRepository.CreateBookmark(content.Bookmark, content.Username);
         }
 
         //[JwtAuthentication]
         [HttpPut]
-        public HttpStatusCode EditBookmark(int id, Bookmark bookmark, string username)
+        public HttpStatusCode EditBookmark(EditJson content)
         {
-            return _bookmarkRepository.EditBookmark(id, bookmark, username);
+            return _bookmarkRepository.EditBookmark(content.Id, content.Bookmark);
         }
 
         //[JwtAuthentication]

@@ -15,7 +15,7 @@ namespace BookmarkManager.Models
  
         Bookmark CreateBookmark(Bookmark bookmark, string username);
 
-        HttpStatusCode EditBookmark(int id, Bookmark bookmark, string username);
+        HttpStatusCode EditBookmark(int id, Bookmark bookmark);
 
         HttpStatusCode DeleteBookmark(int id);
 
@@ -68,7 +68,7 @@ namespace BookmarkManager.Models
             return bookmark;
         }
 
-        public HttpStatusCode EditBookmark(int id, Bookmark bookmark, string username)//
+        public HttpStatusCode EditBookmark(int id, Bookmark bookmark)//
         {
             //pass info to edit? or bookmark as well
 
@@ -100,7 +100,7 @@ namespace BookmarkManager.Models
             if(bookmark == null)
                 throw new HttpResponseException(HttpStatusCode.Conflict);
 
-            _db.Bookmarks.Remove(bookmark);
+            _db.Bookmarks.Remove(bookmark);//need to .clear()?
 
             _db.SaveChanges();
 

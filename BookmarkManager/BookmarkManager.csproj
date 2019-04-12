@@ -119,7 +119,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Bookmark.cs" />
-    <Compile Include="Models\BookmarkClasses.cs" />
+    <Compile Include="Models\JsonHelper.cs" />
     <Compile Include="Models\BookmarkRepository.cs" />
     <Compile Include="Models\DatabaseModel.cs" />
     <Compile Include="Models\User.cs" />
