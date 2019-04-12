@@ -18,6 +18,11 @@ namespace BookmarkManager.Controllers
             _bookmarkRepository = new BookmarkRepository();
         }
 
+        public BookmarksController(IBookmarkRepository bookmarkRepository)
+        {
+            _bookmarkRepository = bookmarkRepository;
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public Bookmark GetBookmark(int id)
