@@ -15,7 +15,7 @@ namespace BookmarkManager.Models
         [Required]
         public string Username { get; set; }
 
-        //[JsonIgnore]//don't include passwords in json output
+        [JsonIgnore]//don't include passwords in json output
         [Required]
         public string UserPassword { get; set; }
 

@@ -21,8 +21,8 @@ namespace BookmarkManager.Models
 
     public class EditJson
     {
-        [JsonProperty("Id")]
-        public int Id { get; set; }
+        [JsonProperty("userId")]
+        public int UserId { get; set; }
 
         [JsonProperty("bookmark")]
         public Bookmark Bookmark { get; set; }

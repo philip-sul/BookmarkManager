@@ -15,13 +15,13 @@ namespace BookmarkManager.Models
  
         Bookmark CreateBookmark(Bookmark bookmark, string username);
 
-        HttpStatusCode EditBookmark(int id, Bookmark bookmark);
+        HttpStatusCode EditBookmark(int userId, Bookmark bookmark);
 
         HttpStatusCode DeleteBookmark(int id);
 
         Bookmark GetBookmark(string title);
 
-        IEnumerable<User> GetBookmarkedUsers(int id);
+        IEnumerable<User> FavouriteBookmark(int bookmarkId, int userId);
 
 
     }
@@ -37,9 +37,6 @@ namespace BookmarkManager.Models
 
         public Bookmark GetBookmark(int id)
         {
-            if (id == null)
-                throw new HttpRequestException("Id is required");
-
             var bookmark = _db.Bookmarks.Find(id);
 
             if(bookmark == null)
@@ -68,13 +65,13 @@ namespace BookmarkManager.Models
             return bookmark;
         }
 
-        public HttpStatusCode EditBookmark(int id, Bookmark bookmark)//
+        public HttpStatusCode EditBookmark(int userId, Bookmark bookmark)//
         {
             //pass info to edit? or bookmark as well
 
             //link, title, date, author, username?
 
-            var bookmarkToChange =_db.Bookmarks.Find(id);
+            var bookmarkToChange =_db.Bookmarks.Find(bookmark.BookmarkId);
 
             if (bookmarkToChange == null)
                 throw new HttpResponseException(HttpStatusCode.Conflict);
@@ -86,7 +83,7 @@ namespace BookmarkManager.Models
 
             bookmarkToChange.Date = bookmark.Date;
 
-            bookmarkToChange.AuthorId = bookmark.AuthorId;
+            bookmarkToChange.AuthorId = userId;
 
             _db.SaveChanges();
 
@@ -114,19 +111,30 @@ namespace BookmarkManager.Models
             if(bookmark == null)
                 throw new HttpResponseException(HttpStatusCode.Conflict);
 
-            return new Bookmark();
+            return bookmark;
         }
 
-        public IEnumerable<User> GetBookmarkedUsers(int id)//
+        public IEnumerable<User> FavouriteBookmark(int bookmarkId, int userId)
         {
 
-            var list = _db.Bookmarks.Find(id).Favourites;
+            var bookmark = _db.Bookmarks.Find(bookmarkId);
+
+            var user = _db.Users.Find(userId);
 
 
-            if(list == null)
+            if(bookmark == null || user == null)
                 throw new HttpRequestException("Id not found");
 
-            return list;
+            bookmark.Favourites.Add(user);
+
+            _db.SaveChanges();
+
+            bookmark = _db.Bookmarks.Find(bookmarkId);
+
+            if (bookmark == null)
+                throw new HttpRequestException("Id not found");
+
+            return bookmark.Favourites;
 
         }
 

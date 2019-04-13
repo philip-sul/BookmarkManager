@@ -41,7 +41,7 @@ namespace BookmarkManager.Controllers
         [HttpPut]
         public HttpStatusCode EditBookmark(EditJson content)
         {
-            return _bookmarkRepository.EditBookmark(content.Id, content.Bookmark);
+            return _bookmarkRepository.EditBookmark(content.UserId, content.Bookmark);
         }
 
         //[JwtAuthentication]
@@ -59,10 +59,10 @@ namespace BookmarkManager.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet]
-        public IEnumerable<User> GetBookmarkedUsers(int id)
+        [HttpPost]
+        public IEnumerable<User> FavouriteBookmark(int bookmarkId,int userId)
         {
-            return _bookmarkRepository.GetBookmarkedUsers(id);
+            return _bookmarkRepository.FavouriteBookmark(bookmarkId, userId);
         }
 
     }
