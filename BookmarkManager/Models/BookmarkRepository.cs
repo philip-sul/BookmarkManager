@@ -125,7 +125,7 @@ namespace BookmarkManager.Models
             if(bookmark == null || user == null)
                 throw new HttpRequestException("Id not found");
 
-            bookmark.Favourites.Add(user);
+            bookmark.Users.Add(user);
 
             _db.SaveChanges();
 
@@ -134,7 +134,7 @@ namespace BookmarkManager.Models
             if (bookmark == null)
                 throw new HttpRequestException("Id not found");
 
-            return bookmark.Favourites;
+            return bookmark.Users;
 
         }
 

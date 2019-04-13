@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -9,7 +10,7 @@ namespace BookmarkManager.Models
     public class Bookmark
     {
         [Key]
-        public int BookmarkId { get; set; }
+        public int? BookmarkId { get; set; }
 
         [Required]
         public string Link { get; set; }
@@ -19,14 +20,19 @@ namespace BookmarkManager.Models
         [Required]
         public DateTime Date { get; set; }
 
+        [InverseProperty("Bookmarks")]
         [Required]
         public int AuthorId { get; set; }
 
-        public IList<User> Favourites { get; set; }
+        [InverseProperty("FavouriteBookmarks")]
+        public IList<User> Users { get; set; }
+
 
         public Bookmark()
         {
-            Favourites = new List<User>();
+
+            Users = new List<User>();
+
         }
 
     }

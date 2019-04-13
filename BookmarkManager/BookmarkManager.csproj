@@ -113,9 +113,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="JwtManager.cs" />
-    <Compile Include="Migrations\201904102145524_initaldb.cs" />
-    <Compile Include="Migrations\201904102145524_initaldb.Designer.cs">
-      <DependentUpon>201904102145524_initaldb.cs</DependentUpon>
+    <Compile Include="Migrations\201904131859105_initialDB.cs" />
+    <Compile Include="Migrations\201904131859105_initialDB.Designer.cs">
+      <DependentUpon>201904131859105_initialDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Bookmark.cs" />
@@ -138,8 +138,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904102145524_initaldb.resx">
-      <DependentUpon>201904102145524_initaldb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904131859105_initialDB.resx">
+      <DependentUpon>201904131859105_initialDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
