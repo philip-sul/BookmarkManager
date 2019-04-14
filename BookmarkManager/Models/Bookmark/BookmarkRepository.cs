@@ -43,7 +43,7 @@ namespace BookmarkManager.Models
 
             user.Bookmarks.Add(bookmark);
 
-            _db.SaveChanges();
+            Save();
 
             return bookmark;
         }

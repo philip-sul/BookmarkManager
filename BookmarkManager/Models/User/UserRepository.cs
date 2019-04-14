@@ -19,7 +19,7 @@ namespace BookmarkManager.Models
         {
             ValidateNewUser(user);
             _dbContext.Users.Add(user);
-            _dbContext.SaveChanges();
+            Save();
 
             return user;
         }
@@ -41,11 +41,11 @@ namespace BookmarkManager.Models
             //maybe unneeded 
             if (dbUser == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new HttpResponseException(HttpStatusCode.Conflict);
             }
             
             var userFavorites = dbUser.FavouriteBookmarks;
-            //No exceptions, just return results
+            
             return userFavorites;
         }
 
@@ -57,11 +57,11 @@ namespace BookmarkManager.Models
 
             if (dbUser == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new HttpResponseException(HttpStatusCode.Conflict);
             }
-
+            
             var userBookmarks = dbUser.Bookmarks;
-            //No exceptions, just return results
+            
             return userBookmarks;
         }
 
