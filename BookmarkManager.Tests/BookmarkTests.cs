@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -24,7 +25,7 @@ namespace BookmarkManager.Tests
 
             bookmarkRepo.Setup(x => x.GetBookmark(1)).Throws(new HttpResponseException(HttpStatusCode.Conflict));
 
-            //controller.GetBookmark(1);
+            controller.GetBookmark(1);
 
             Assert.Fail();
         }
@@ -42,12 +43,12 @@ namespace BookmarkManager.Tests
             bookmark.Object.BookmarkId = 1;
 
             //get a bookmark
+            
+            bookmarkRepo.Setup(x => x.GetBookmark(1)).Returns(new Bookmark{BookmarkId = 1});
 
-            //var result = controller.GetBookmark(It.IsAny<Int32>());
+            var result = controller.GetBookmark(1);
 
-            var result = bookmarkRepo.Setup(x => x.GetBookmark(1)).Returns(bookmark.Object);
-
-            Assert.AreEqual(bookmark, result);
+            Assert.AreEqual(bookmark.Object.BookmarkId, result.BookmarkId);
 
 
         }
@@ -60,7 +61,9 @@ namespace BookmarkManager.Tests
 
             var controller = new BookmarksController(bookmarkRepo.Object);
 
-            bookmarkRepo.Setup(x => x.CreateBookmark(null, "test")).Throws<Exception>();
+            bookmarkRepo.Setup(x => x.CreateBookmark(null, "test")).Throws(new HttpResponseException(HttpStatusCode.Conflict));
+
+            controller.CreateBookmark(new CreateJson {Bookmark = null, Username = "test"});
 
             Assert.Fail();
         }
@@ -75,7 +78,11 @@ namespace BookmarkManager.Tests
 
             var bookmark = new Mock<Bookmark>();
 
-            bookmarkRepo.Setup(x => x.CreateBookmark(bookmark.Object, "test")).Throws<Exception>();
+            bookmarkRepo.Setup(x => x.CreateBookmark(bookmark.Object, "test")).Throws(new HttpRequestException("Username not found"));
+
+            //needs refactoring to test
+
+            controller.CreateBookmark(new CreateJson {Bookmark = new Bookmark(), Username = "test2"});
 
             Assert.Fail();
         }
@@ -89,13 +96,9 @@ namespace BookmarkManager.Tests
 
             var bookmark = new Mock<Bookmark>();
 
-            bookmark.Object.BookmarkId = 1;
-
-            //get a bookmark
-
-            //var result = controller.GetBookmark(It.IsAny<Int32>());
-
             bookmarkRepo.Setup(x => x.CreateBookmark(bookmark.Object, "test"));
+
+            controller.CreateBookmark(new CreateJson { Bookmark = new Bookmark(), Username = "test" });
 
             //test Save
 
@@ -110,7 +113,9 @@ namespace BookmarkManager.Tests
 
             var controller = new BookmarksController(bookmarkRepo.Object);
 
-            bookmarkRepo.Setup(x => x.EditBookmark(1,null)).Throws<Exception>();
+            bookmarkRepo.Setup(x => x.EditBookmark(1,null)).Throws(new HttpResponseException(HttpStatusCode.Conflict));
+
+            controller.EditBookmark(new EditJson{Bookmark = null,UserId = 1});
 
             Assert.Fail();
         }
@@ -130,7 +135,9 @@ namespace BookmarkManager.Tests
 
             //var result = controller.GetBookmark(It.IsAny<Int32>());
 
-            bookmarkRepo.Setup(x => x.EditBookmark(1, bookmark.Object));
+            bookmarkRepo.Setup(x => x.EditBookmark(1, bookmark.Object)).Returns(HttpStatusCode.Accepted);
+
+            controller.EditBookmark(new EditJson { Bookmark = new Bookmark(), UserId = 1 });
 
             //test Save
 
@@ -147,8 +154,9 @@ namespace BookmarkManager.Tests
 
             var bookmark = new Mock<Bookmark>();
 
-            bookmarkRepo.Setup(x => x.DeleteBookmark(1)).Throws<Exception>();
+            bookmarkRepo.Setup(x => x.DeleteBookmark(1)).Throws(new HttpResponseException(HttpStatusCode.Conflict));
 
+            controller.DeleteBookmark(1);
 
             Assert.Fail();
         }
@@ -165,11 +173,12 @@ namespace BookmarkManager.Tests
 
             //controller.DeleteBookmark(1);
 
-            bookmarkRepo.Setup(x => x.CreateBookmark(new Bookmark{BookmarkId = 1}, "test"));
+            //bookmarkRepo.Setup(x => x.CreateBookmark(new Bookmark{BookmarkId = 1}, "test"));
 
-            //bookmarkRepo.Setup(x => x.DeleteBookmark(1));
+            bookmarkRepo.Setup(x => x.DeleteBookmark(1)).Returns(HttpStatusCode.Accepted);
 
             controller.DeleteBookmark(1);
+
 
             //test Save
 
@@ -188,9 +197,12 @@ namespace BookmarkManager.Tests
 
             //call a bookmark that doesn't exist
 
-            bookmarkRepo.Setup(x => x.GetBookmark("test")).Throws<Exception>();
+            bookmarkRepo.Setup(x => x.GetBookmark("test")).Throws(new HttpResponseException(HttpStatusCode.Conflict));
+
+            controller.GetBookmark("test");
 
             Assert.Fail();
+
         }
 
         [TestMethod]
@@ -207,9 +219,11 @@ namespace BookmarkManager.Tests
 
             //get a bookmark
 
-            var result = bookmarkRepo.Setup(x => x.GetBookmark("test")).Returns(new Bookmark { Title = "test"});
+            bookmarkRepo.Setup(x => x.GetBookmark("test")).Returns(new Bookmark { Title = "test"});
 
-            Assert.AreEqual(bookmark, result);
+            var result = controller.GetBookmark("test");
+
+            Assert.AreEqual(bookmark.Object.Title, result.Title);
 
 
         }
@@ -223,7 +237,9 @@ namespace BookmarkManager.Tests
 
             var bookmark = new Mock<Bookmark>();
 
-            bookmarkRepo.Setup(x => x.FavouriteBookmark(1, 1));
+            bookmarkRepo.Setup(x => x.FavouriteBookmark(1, 1)).Returns(new List<User>());
+
+            controller.FavouriteBookmark(1, 1);
 
             //test Save
 
@@ -239,9 +255,9 @@ namespace BookmarkManager.Tests
 
             var controller = new BookmarksController(bookmarkRepo.Object);
 
-            var bookmark = new Mock<Bookmark>();
+            bookmarkRepo.Setup(x => x.FavouriteBookmark(1, 1)).Throws(new HttpRequestException("Id not found"));
 
-            bookmarkRepo.Setup(x => x.FavouriteBookmark(1, 1)).Throws<HttpRequestException>();
+            controller.FavouriteBookmark(1, 1);
 
             Assert.Fail();
         }
@@ -254,9 +270,9 @@ namespace BookmarkManager.Tests
 
             var controller = new BookmarksController(bookmarkRepo.Object);
 
-            var bookmark = new Mock<Bookmark>();
+            bookmarkRepo.Setup(x => x.FavouriteBookmark(1, 1)).Throws(new HttpRequestException("Id not found"));
 
-            bookmarkRepo.Setup(x => x.FavouriteBookmark(1, 1)).Throws<HttpRequestException>();
+            controller.FavouriteBookmark(1, 1);
 
             Assert.Fail();
         }
