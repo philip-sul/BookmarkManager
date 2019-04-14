@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using Lab6;
 using Lab6.Filters;
 
 namespace BookmarkManager.Models
@@ -75,6 +76,7 @@ namespace BookmarkManager.Models
 
         public HttpStatusCode DeleteBookmark(int id)
         {
+            
             var bookmark = _db.Bookmarks.Find(id);
 
             if (bookmark == null)
@@ -132,7 +134,6 @@ namespace BookmarkManager.Models
                             where u.Title.ToLower().Contains(title.ToLower())
                             select u;
 
-            //No exceptions, just return results
             return bookmarks;
         }
     }

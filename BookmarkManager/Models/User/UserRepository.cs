@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lab6;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -17,28 +18,42 @@ namespace BookmarkManager.Models
 
         public User CreateUser(User user)
         {
-            ValidateNewUser(user);
+            var verify = _dbContext.Users.FirstOrDefault(x => x.Username.Equals(user.Username));
+            if(verify != null)
+            {
+                throw new HttpResponseException(HttpStatusCode.Conflict);
+            }
+
+            verify = _dbContext.Users.FirstOrDefault(x => x.UserEmail.Equals(user.UserEmail));
+            if (verify != null)
+            {
+                throw new HttpResponseException(HttpStatusCode.Conflict);
+            }
+
             _dbContext.Users.Add(user);
             Save();
 
+            //Hardcoded because JsonIgnore was causing problems
+            user.UserPassword = "";
             return user;
         }
 
-        public HttpStatusCode DeleteUser(int userId)
+        public HttpStatusCode DeleteUser(int userId, string token)
         {
-            ValidateUser(userId);
+            ValidateUser(userId, token);
 
-            _dbContext.Users.Remove(_dbContext.Users.First(x => x.UserId.Equals(userId)));
+            _dbContext.Users.Remove(_dbContext.Users.FirstOrDefault(x => x.UserId.Equals(userId)));
             Save();
             //signout
             return HttpStatusCode.Accepted;
         }
 
-        public IEnumerable<Bookmark> GetFavoriteBookmarks(int userId)
+        public IEnumerable<Bookmark> GetFavoriteBookmarks(int userId, string token)
         {
-            ValidateUser(userId);
+            ValidateUser(userId, token);
+
             var dbUser = _dbContext.Users.Find(userId);
-            //maybe unneeded 
+           
             if (dbUser == null)
             {
                 throw new HttpResponseException(HttpStatusCode.Conflict);
@@ -49,10 +64,10 @@ namespace BookmarkManager.Models
             return userFavorites;
         }
 
-        public IEnumerable<Bookmark> GetUserBookmarks(int userId)
+        public IEnumerable<Bookmark> GetUserBookmarks(int userId, string token)
         {
-            ValidateUser(userId);
-            //maybe unneeded 
+            ValidateUser(userId, token);
+            
             var dbUser = _dbContext.Users.Find(userId);
 
             if (dbUser == null)
@@ -65,22 +80,21 @@ namespace BookmarkManager.Models
             return userBookmarks;
         }
 
-        public User LoginUser(User user)
+        public string LoginUser(string username, string password)
         {
-            var dbUser = _dbContext.Users.First(x => x.Username.Equals(user.Username));
+            var dbUser = _dbContext.Users.FirstOrDefault(x => x.Username.Equals(username));
 
             if(dbUser == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new HttpResponseException(HttpStatusCode.Conflict);
             }
-            if(dbUser.UserPassword != user.UserPassword)
+            if(dbUser.UserPassword != password)
             {
-                throw new HttpResponseException(HttpStatusCode.NotAcceptable);
+                throw new HttpResponseException(HttpStatusCode.Conflict);
             }
 
-            //generate token or w.e
-
-            return dbUser;
+            return JwtManager.GenerateToken(dbUser.Username, 20);
+           
         }
 
         public void Save()
@@ -88,22 +102,27 @@ namespace BookmarkManager.Models
             _dbContext.SaveChanges();
         }
 
-        public void ValidateNewUser(User user)
-        {
-
-        }
-
         //authentication -- token
-        public void ValidateUser(int userId)
+        //Currently cant figure out how to extract the username(key) from token
+        public bool ValidateUser(int userId, string token)
         {
-            //hardcode
-            int key = userId;
+            var username = _dbContext.Users.Find(userId).Username;
 
-            if (key != userId)
+            if(username == null)
             {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                throw new HttpResponseException(HttpStatusCode.Conflict);
             }
 
+            //var tokenUsername = JwtManager.GetPrincipal(token).ToString();
+
+            //hardcoded
+            var tokenUsername = username;
+
+            if (tokenUsername != username || tokenUsername == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.Conflict);
+            }
+            return true;
         }
 
         public IEnumerable<User> SearchUsers(string username)
@@ -112,7 +131,6 @@ namespace BookmarkManager.Models
                           where u.Username.ToLower().Contains(username.ToLower())
                           select u;
 
-            //No exceptions, just return results
             return dbUsers;
         }
     }

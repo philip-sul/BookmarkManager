@@ -9,16 +9,13 @@ namespace BookmarkManager.Models
 {
     public interface IUserRepository
     {
-        IEnumerable<Bookmark> GetUserBookmarks(int userId);
-        IEnumerable<Bookmark> GetFavoriteBookmarks(int userId);
+        IEnumerable<Bookmark> GetUserBookmarks(int userId, string token);
+        IEnumerable<Bookmark> GetFavoriteBookmarks(int userId, string token);
         User CreateUser(User user);
-        User LoginUser(User user);
-        HttpStatusCode DeleteUser(int userId);
+        string LoginUser(string username, string password);
+        HttpStatusCode DeleteUser(int userId, string token);
         IEnumerable<User> SearchUsers(string username);
-
-        //maybe move to a new interface
-        void ValidateNewUser(User user);
-        void ValidateUser(int id);
+        bool ValidateUser(int id, string token);
         void Save();
     }
 }

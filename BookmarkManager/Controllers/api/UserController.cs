@@ -12,7 +12,10 @@ namespace BookmarkManager.Controllers
     public class UserController : ApiController
     {
         private IUserRepository _userRepository;
-
+        public UserController()
+        {
+            _userRepository = new UserRepository();
+        }
         //possibly add other constructor.
         public UserController(IUserRepository userRepository)
         {
@@ -20,15 +23,17 @@ namespace BookmarkManager.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Bookmark> GetUserBookmarks(int userId)
+        [Route("api/user/bookmarks/")]
+        public IEnumerable<Bookmark> GetUserBookmarks(int userId, string token)
         {
-            return _userRepository.GetUserBookmarks(userId);
+            return _userRepository.GetUserBookmarks(userId, token);
         }
 
         [HttpGet]
-        public IEnumerable<Bookmark> GetFavoriteBookmarks(int userId)
+        [Route("api/user/favorites/{userId}")]
+        public IEnumerable<Bookmark> GetFavoriteBookmarks(int userId, string token)
         {
-            return _userRepository.GetFavoriteBookmarks(userId);
+            return _userRepository.GetFavoriteBookmarks(userId, token);
         }
 
         [HttpPost]
@@ -38,23 +43,28 @@ namespace BookmarkManager.Controllers
         }
 
         [HttpGet]
-        public User LoginUser(User user)
+        [Route("api/user/login")]
+        public string LoginUser(string username, string password)
         {
-            return _userRepository.LoginUser(user);
+            return _userRepository.LoginUser(username, password);
         }
 
         [HttpDelete]
-        public HttpStatusCode DeleteUser(int userId)
+        public HttpStatusCode DeleteUser(int userId, string token)
         {
-            return _userRepository.DeleteUser(userId);
+            return _userRepository.DeleteUser(userId, token);
         }
 
         [HttpGet]
+        [Route("api/user/searchUsers")]
         public IEnumerable<User> SearchUsers(string username)
         {
             return _userRepository.SearchUsers(username);
         }
 
-       
+        public bool TestAuthenticate(int userId, string token)
+        {
+            return _userRepository.ValidateUser(userId, token);
+        }
     }
 }
