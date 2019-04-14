@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.EnterpriseServices;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -23,6 +24,8 @@ namespace BookmarkManager.Models
 
         IEnumerable<User> FavouriteBookmark(int bookmarkId, int userId);
 
+        void Save();
+
 
     }
 
@@ -33,6 +36,11 @@ namespace BookmarkManager.Models
         public BookmarkRepository()
         {
             _db = new DatabaseModel();
+        }
+
+        public void Save()
+        {
+            _db.SaveChanges();
         }
 
         public Bookmark GetBookmark(int id)
@@ -60,16 +68,13 @@ namespace BookmarkManager.Models
 
             user.Bookmarks.Add(bookmark);
 
-            _db.SaveChanges();
+            Save();
 
             return bookmark;
         }
 
         public HttpStatusCode EditBookmark(int userId, Bookmark bookmark)//
         {
-            //pass info to edit? or bookmark as well
-
-            //link, title, date, author, username?
 
             var bookmarkToChange =_db.Bookmarks.Find(bookmark.BookmarkId);
 
@@ -85,7 +90,7 @@ namespace BookmarkManager.Models
 
             bookmarkToChange.AuthorId = userId;
 
-            _db.SaveChanges();
+            Save();
 
             return HttpStatusCode.Accepted;
         }
@@ -99,7 +104,7 @@ namespace BookmarkManager.Models
 
             _db.Bookmarks.Remove(bookmark);//need to .clear()?
 
-            _db.SaveChanges();
+            Save();
 
             return HttpStatusCode.Accepted;
         }
@@ -127,7 +132,7 @@ namespace BookmarkManager.Models
 
             bookmark.Users.Add(user);
 
-            _db.SaveChanges();
+            Save();
 
             bookmark = _db.Bookmarks.Find(bookmarkId);
 
