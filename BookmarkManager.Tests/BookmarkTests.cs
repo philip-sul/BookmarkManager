@@ -98,6 +98,8 @@ namespace BookmarkManager.Tests
 
             bookmarkRepo.Setup(x => x.CreateBookmark(bookmark.Object, "test"));
 
+            bookmarkRepo.Verify(m => m.Save());
+
             controller.CreateBookmark(new CreateJson { Bookmark = new Bookmark(), Username = "test" });
 
             //test Save
