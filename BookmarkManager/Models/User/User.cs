@@ -21,6 +21,7 @@ namespace BookmarkManager.Models
         public string UserPassword { get; set; }
 
         [EmailAddress]
+        [Required]
         public string UserEmail { get; set; }
 
         public  IList<Bookmark> Bookmarks { get; set; }

@@ -65,5 +65,13 @@ namespace BookmarkManager.Controllers
             return _bookmarkRepository.FavouriteBookmark(bookmarkId, userId);
         }
 
+        //add tests
+        //add routing 
+        [HttpGet]
+        public IEnumerable<Bookmark> SearchBookmarks(string title)
+        {
+            return _bookmarkRepository.SearchBookmarks(title);
+        }
+
     }
 }
