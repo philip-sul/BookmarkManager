@@ -121,6 +121,11 @@ namespace BookmarkManager.Models
 
         }
 
+        public void Save()
+        {
+            _db.SaveChanges();
+        }
+
         public IEnumerable<Bookmark> SearchBookmarks(string title)
         {
             var bookmarks = from u in _db.Bookmarks

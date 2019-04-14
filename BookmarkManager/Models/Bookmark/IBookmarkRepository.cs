@@ -16,5 +16,6 @@ namespace BookmarkManager.Models
         Bookmark GetBookmark(string title);
         IEnumerable<User> FavouriteBookmark(int bookmarkId, int userId);
         IEnumerable<Bookmark> SearchBookmarks(string title);
+        void Save();
     }
 }

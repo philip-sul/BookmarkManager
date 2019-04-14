@@ -19,6 +19,12 @@ namespace BookmarkManager.Models
         public string Username { get; set; }
     }
 
+    public class CreateUserJson
+    {
+        [JsonProperty("user")]
+        public User User { get; set; }
+    }
+
     public class EditJson
     {
         [JsonProperty("userId")]

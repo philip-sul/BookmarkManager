@@ -32,9 +32,9 @@ namespace BookmarkManager.Controllers
         }
 
         [HttpPost]
-        public User CreateUser(User user)
+        public User CreateUser(CreateUserJson content)
         {
-            return _userRepository.CreateUser(user);
+            return _userRepository.CreateUser(content.User);
         }
 
         [HttpGet]
