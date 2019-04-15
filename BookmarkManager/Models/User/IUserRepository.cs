@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace BookmarkManager.Models
 {
+    /// <summary>
+    /// BookmarkManager: IUserRepository
+    /// Chris Masters - 4/14/2019
+    /// 
+    /// Used in dep. injection for userRepo and UserController.
+    /// 
+    /// </summary>
     public interface IUserRepository
     {
         IEnumerable<Bookmark> GetUserBookmarks(int userId, string token);

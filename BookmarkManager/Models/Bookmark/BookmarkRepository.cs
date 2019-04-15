@@ -10,6 +10,15 @@ using Lab6.Filters;
 
 namespace BookmarkManager.Models
 {
+    /// <summary>
+    /// BookmarkRepository
+    /// Philip Sulinski - 4/14/2019
+    /// 
+    /// Performs business logic for use in BookmarkController. 
+    /// Used with the IBookmarkRepository for dependency injection.
+    /// Queries db with DatabaseModel
+    /// 
+    /// </summary>
     public class BookmarkRepository : IBookmarkRepository
     {
         private DatabaseModel _db;

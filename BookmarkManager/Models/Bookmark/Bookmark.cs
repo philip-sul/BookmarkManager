@@ -7,6 +7,13 @@ using System.Web;
 
 namespace BookmarkManager.Models
 {
+    /// <summary>
+    /// Bookmark 
+    /// Philip Sulinski - 4/14/2019
+    /// 
+    /// Bookmark model for db, repos, and controllers.
+    /// 
+    /// </summary>
     public class Bookmark
     {
         [Key]

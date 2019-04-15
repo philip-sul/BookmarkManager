@@ -8,6 +8,14 @@ using Newtonsoft.Json;
 
 namespace BookmarkManager.Models
 {
+    /// <summary>
+    /// BookmarkManager: User
+    /// Chris Masters - 4/14/2019
+    /// 
+    /// Structures the user class and Models the User table in db.
+    /// Properties are annotated for db and Jwt
+    /// 
+    /// </summary>
     public class User
     {
         [Key]

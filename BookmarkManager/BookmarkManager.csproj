@@ -108,14 +108,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\api\BookmarksController.cs" />
     <Compile Include="Controllers\api\UserController.cs" />
-    <Compile Include="Filters\AddChallengeOnUnauthorizedResult.cs" />
-    <Compile Include="Filters\AuthenticationFailureResult.cs" />
-    <Compile Include="Filters\HttpAuthenticationChallengeContextExtensions.cs" />
-    <Compile Include="Filters\JwtAuthenticationAttribute.cs" />
+    <Compile Include="DB_JSON_JWT_Utilities\Filters\AddChallengeOnUnauthorizedResult.cs" />
+    <Compile Include="DB_JSON_JWT_Utilities\Filters\AuthenticationFailureResult.cs" />
+    <Compile Include="DB_JSON_JWT_Utilities\Filters\HttpAuthenticationChallengeContextExtensions.cs" />
+    <Compile Include="DB_JSON_JWT_Utilities\Filters\JwtAuthenticationAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="JwtManager.cs" />
+    <Compile Include="DB_JSON_JWT_Utilities\JwtManager.cs" />
     <Compile Include="Migrations\201904131859105_initialDB.cs" />
     <Compile Include="Migrations\201904131859105_initialDB.Designer.cs">
       <DependentUpon>201904131859105_initialDB.cs</DependentUpon>
@@ -127,9 +127,9 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Bookmark\Bookmark.cs" />
     <Compile Include="Models\Bookmark\BookmarkRepository.cs" />
-    <Compile Include="Models\DatabaseModel.cs" />
+    <Compile Include="DB_JSON_JWT_Utilities\DatabaseModel.cs" />
     <Compile Include="Models\Bookmark\IBookmarkRepository.cs" />
-    <Compile Include="Models\JsonHelper.cs" />
+    <Compile Include="DB_JSON_JWT_Utilities\JsonHelper.cs" />
     <Compile Include="Models\User\IUserRepository.cs" />
     <Compile Include="Models\User\User.cs" />
     <Compile Include="Models\User\UserRepository.cs" />

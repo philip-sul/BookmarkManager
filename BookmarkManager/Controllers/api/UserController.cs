@@ -9,7 +9,22 @@ using System.Web.Http;
 
 namespace BookmarkManager.Controllers
 {
-    //add authentication
+
+    /// <summary>
+    /// BookmarkManager: UserController
+    /// Chris Masters - 4/14/2019
+    /// 
+    /// Allows for interaction between User: model, repository, and webapi UI.  
+    /// 
+    /// Uses IUserRepository and UserRepository for dep. inject.
+    /// 
+    /// Note: Authentication is not complete, we could not implement the User specific
+    /// authentication. We wanted to use the token and the ValidateUser() to compare the
+    /// credentials so that only the person associated with the account may access and edit
+    /// but is not complete.
+    /// 
+    /// </summary>
+   
     public class UserController : ApiController
     {
         private IUserRepository _userRepository;
