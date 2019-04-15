@@ -11,6 +11,14 @@ using Moq;
 
 namespace BookmarkManager.Tests
 {
+    /// <summary>
+    /// BookmarkManager: BookmarkTests
+    /// Philip Sulinski - 4/14/2019
+    /// 
+    /// Performs various tests on the Bookmark functionalities. 
+    /// 
+    /// </summary>
+
     [TestClass]
     public class BookmarkTests
     {
