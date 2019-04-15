@@ -6,6 +6,12 @@ using System.Web;
 
 namespace BookmarkManager.Models
 {
+    /// <summary>
+    /// BookmarkManager: DatabaseModel
+    /// 
+    /// Used to query and connect the db.
+    /// 
+    /// </summary>
     public class DatabaseModel : DbContext
     {
         public DbSet<User> Users { get; set; }

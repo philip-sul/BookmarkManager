@@ -13,7 +13,9 @@ namespace BookmarkManager.Tests
 {
     /// <summary>
     /// BookmarkManager: UserTests
-    /// Chris Masters
+    /// Chris Masters - 4/14/2019
+    /// 
+    /// Performs various tests on the User functionalities. 
     /// 
     /// </summary>
     [TestClass]

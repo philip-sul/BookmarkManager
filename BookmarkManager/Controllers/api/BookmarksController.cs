@@ -9,6 +9,15 @@ using Lab6.Filters;
 
 namespace BookmarkManager.Controllers
 {
+    /// <summary>
+    /// BookmarksController
+    /// Philip Sulinski - 4/14/2019
+    /// 
+    /// Allows for interaction between Bookmark: model, repository, and webapi UI.  
+    /// 
+    /// Uses IBookmarkRepository and BookmarkRepository for dep. inject.
+    /// 
+    /// </summary>
     public class BookmarksController : ApiController
     {
         private IBookmarkRepository _bookmarkRepository;
