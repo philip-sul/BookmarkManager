@@ -47,8 +47,8 @@ namespace BookmarkManager.Tests
             bookmark.Object.BookmarkId = 1;
 
             //get a bookmark
-            
-            bookmarkRepo.Setup(x => x.GetBookmark(1)).Returns(new Bookmark{BookmarkId = 1});
+
+            bookmarkRepo.Setup(x => x.GetBookmark(1)).Returns(new Bookmark { BookmarkId = 1 });
 
             var result = controller.GetBookmark(1);
 
@@ -74,7 +74,7 @@ namespace BookmarkManager.Tests
 
             bookmarkRepo.Setup(x => x.CreateBookmark(null, "test")).Throws(new HttpResponseException(HttpStatusCode.Conflict));
 
-            controller.CreateBookmark(new CreateJson {Bookmark = null, Username = "test"});
+            controller.CreateBookmark(new CreateJson { Bookmark = null, Username = "test" });
 
             Assert.Fail();
         }
@@ -96,7 +96,7 @@ namespace BookmarkManager.Tests
 
             //needs refactoring to test
 
-            controller.CreateBookmark(new CreateJson {Bookmark = new Bookmark(), Username = "test2"});
+            controller.CreateBookmark(new CreateJson { Bookmark = new Bookmark(), Username = "test2" });
 
             Assert.Fail();
         }
@@ -120,7 +120,7 @@ namespace BookmarkManager.Tests
 
             //test if Save was called
 
-            bookmarkRepo.Verify(m => m.Save()); 
+            bookmarkRepo.Verify(m => m.Save());
         }
 
         [TestMethod]
@@ -136,9 +136,11 @@ namespace BookmarkManager.Tests
 
             //call edi when bookmark is null to throw exception
 
-            bookmarkRepo.Setup(x => x.EditBookmark(1,null)).Throws(new HttpResponseException(HttpStatusCode.Conflict));
 
-            controller.EditBookmark(new EditJson{Bookmark = null,UserId = 1});
+            bookmarkRepo.Setup(x => x.EditBookmark(1, null)).Throws(new HttpResponseException(HttpStatusCode.Conflict));
+
+
+            controller.EditBookmark(new EditJson { Bookmark = null, UserId = 1 });
 
             Assert.Fail();
         }
@@ -243,7 +245,7 @@ namespace BookmarkManager.Tests
 
             //get a bookmark successfully and test that Titles are the same
 
-            bookmarkRepo.Setup(x => x.GetBookmark("test")).Returns(new Bookmark { Title = "test"});
+            bookmarkRepo.Setup(x => x.GetBookmark("test")).Returns(new Bookmark { Title = "test" });
 
             var result = controller.GetBookmark("test");
 

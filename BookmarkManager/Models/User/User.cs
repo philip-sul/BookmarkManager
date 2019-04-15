@@ -16,11 +16,12 @@ namespace BookmarkManager.Models
         [Required]
         public string Username { get; set; }
 
-        [JsonIgnore]//don't include passwords in json output
+       // [JsonIgnore] - removed because was causing issues with creating new User
         [Required]
         public string UserPassword { get; set; }
 
         [EmailAddress]
+        [Required]
         public string UserEmail { get; set; }
 
         public  IList<Bookmark> Bookmarks { get; set; }
