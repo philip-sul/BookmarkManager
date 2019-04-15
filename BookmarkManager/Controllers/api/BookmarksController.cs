@@ -66,7 +66,7 @@ namespace BookmarkManager.Controllers
         }
 
         //add tests
-        //add routing 
+        [Route("api/bookmarks/searchBookmarks")]
         [HttpGet]
         public IEnumerable<Bookmark> SearchBookmarks(string title)
         {
