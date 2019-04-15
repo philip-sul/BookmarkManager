@@ -1,4 +1,5 @@
 ﻿using BookmarkManager.Models;
+using Lab6.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace BookmarkManager.Controllers
             _userRepository = userRepository ?? new UserRepository();
         }
 
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/user/bookmarks/")]
         public IEnumerable<Bookmark> GetUserBookmarks(int userId, string token)
@@ -29,6 +31,7 @@ namespace BookmarkManager.Controllers
             return _userRepository.GetUserBookmarks(userId, token);
         }
 
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/user/favorites/{userId}")]
         public IEnumerable<Bookmark> GetFavoriteBookmarks(int userId, string token)
@@ -42,6 +45,7 @@ namespace BookmarkManager.Controllers
             return _userRepository.CreateUser(content.User);
         }
 
+
         [HttpGet]
         [Route("api/user/login")]
         public string LoginUser(string username, string password)
@@ -49,12 +53,14 @@ namespace BookmarkManager.Controllers
             return _userRepository.LoginUser(username, password);
         }
 
+        [JwtAuthentication]
         [HttpDelete]
         public HttpStatusCode DeleteUser(int userId, string token)
         {
             return _userRepository.DeleteUser(userId, token);
         }
 
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/user/searchUsers")]
         public IEnumerable<User> SearchUsers(string username)
