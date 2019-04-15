@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -13,6 +14,7 @@ namespace BookmarkManager.Tests
     [TestClass]
     public class BookmarkTests
     {
+
         [TestMethod]
         [ExpectedException(typeof(HttpResponseException))]
         public void GetBookmark_NoId_ThrowException()
@@ -39,24 +41,43 @@ namespace BookmarkManager.Tests
             //create mock objects
 
             var bookmarkRepo = new Mock<IBookmarkRepository>();
+            var controller = new BookmarksController(bookmarkRepo.Object);
 
+            //get a bookmark
+
+            Bookmark sample;
+
+            bookmarkRepo.Setup(x => x.GetBookmark(1)).Returns(sample = new Bookmark { BookmarkId = 1 });
+
+            var result = controller.GetBookmark(1);
+
+            //check that are equal
+
+            bool id = sample.BookmarkId == result.BookmarkId;
+            bool author = sample.AuthorId == result.AuthorId;
+            bool date = sample.Date == result.Date;
+            bool link = sample.Link == result.Link;
+            bool title = sample.Title == result.Title;
+            bool users = sample.Users.Equals(result.Users);
+
+            Assert.IsTrue(id && author && date && link && title && users);
+
+
+        }
+
+        [TestMethod]
+        public void CreateBookmark_Success_VerifySave()
+        {
+            var bookmarkRepo = new Mock<IBookmarkRepository>();
             var controller = new BookmarksController(bookmarkRepo.Object);
 
             var bookmark = new Mock<Bookmark>();
 
-            bookmark.Object.BookmarkId = 1;
+            bookmarkRepo.Setup(x => x.CreateBookmark(bookmark.Object,"test"));
 
-            //get a bookmark
+            controller.CreateBookmark(new CreateJson { Bookmark = bookmark.Object, Username = "test"});
 
-            bookmarkRepo.Setup(x => x.GetBookmark(1)).Returns(new Bookmark { BookmarkId = 1 });
-
-            var result = controller.GetBookmark(1);
-
-            //check that Ids are equal
-
-            Assert.AreEqual(bookmark.Object.BookmarkId, result.BookmarkId);
-
-
+            bookmarkRepo.Verify(r => r.Save());
         }
 
         [TestMethod]
@@ -110,17 +131,40 @@ namespace BookmarkManager.Tests
 
             var controller = new BookmarksController(bookmarkRepo.Object);
 
+            var newBookmark = new Bookmark()
+            {
+                BookmarkId = 1,
+                AuthorId = 1,
+                Date = DateTime.Now,
+                Link = "link",
+                Title = "title",
+                Users = new List<User>()
+            };
+
             var bookmark = new Mock<Bookmark>();
+
+            bookmark.Object.BookmarkId = newBookmark.BookmarkId;
+            bookmark.Object.AuthorId = newBookmark.AuthorId;
+            bookmark.Object.Date = newBookmark.Date;
+            bookmark.Object.Link = newBookmark.Link;
+            bookmark.Object.Title = newBookmark.Title;
+            bookmark.Object.Users = newBookmark.Users;
 
             //call bookmark successfully
 
-            bookmarkRepo.Setup(x => x.CreateBookmark(bookmark.Object, "test")).Returns(bookmark.Object);
+            bookmarkRepo.Setup(x => x.CreateBookmark(bookmark.Object, "test")).Returns(newBookmark);
 
-            controller.CreateBookmark(new CreateJson { Bookmark = new Bookmark(), Username = "test" });
+            var result = controller.CreateBookmark(new CreateJson {Bookmark = bookmark.Object, Username = "test" });
 
-            //test if Save was called
+            bool id = newBookmark.BookmarkId == result.BookmarkId;
+            bool author = newBookmark.AuthorId == result.AuthorId;
+            bool date = newBookmark.Date == result.Date;
+            bool link = newBookmark.Link == result.Link;
+            bool title = newBookmark.Title == result.Title;
+            bool users = newBookmark.Users.Equals(result.Users);
 
-            bookmarkRepo.Verify(m => m.Save());
+            Assert.IsTrue(id && author && date && link && title && users);
+
         }
 
         [TestMethod]
@@ -134,7 +178,7 @@ namespace BookmarkManager.Tests
 
             var controller = new BookmarksController(bookmarkRepo.Object);
 
-            //call edi when bookmark is null to throw exception
+            //call edit when bookmark is null to throw exception
 
 
             bookmarkRepo.Setup(x => x.EditBookmark(1, null)).Throws(new HttpResponseException(HttpStatusCode.Conflict));
@@ -154,19 +198,32 @@ namespace BookmarkManager.Tests
 
             var controller = new BookmarksController(bookmarkRepo.Object);
 
+            var newBookmark = new Bookmark()
+            {
+                BookmarkId = 1,
+                AuthorId = 1,
+                Date = DateTime.Now,
+                Link = "link",
+                Title = "title",
+                Users = new List<User>()
+            };
+
             var bookmark = new Mock<Bookmark>();
 
-            bookmark.Object.BookmarkId = 1;
+            bookmark.Object.BookmarkId = newBookmark.BookmarkId;
+            bookmark.Object.AuthorId = newBookmark.AuthorId;
+            bookmark.Object.Date = newBookmark.Date;
+            bookmark.Object.Link = newBookmark.Link;
+            bookmark.Object.Title = newBookmark.Title;
+            bookmark.Object.Users = newBookmark.Users;
 
             //get a bookmark that successfully returns HttpStatusCode
 
             bookmarkRepo.Setup(x => x.EditBookmark(1, bookmark.Object)).Returns(HttpStatusCode.Accepted);
 
-            controller.EditBookmark(new EditJson { Bookmark = new Bookmark(), UserId = 1 });
+            var result = controller.EditBookmark(new EditJson { Bookmark = bookmark.Object, UserId = 1 });
 
-            //test if Save() was called
-
-            bookmarkRepo.Verify(m => m.Save());
+            Assert.AreEqual(result, HttpStatusCode.Accepted);
         }
 
         [TestMethod]
@@ -200,14 +257,13 @@ namespace BookmarkManager.Tests
 
             //call delete with successful HttpStatusCode
 
-
             bookmarkRepo.Setup(x => x.DeleteBookmark(1)).Returns(HttpStatusCode.Accepted);
 
-            controller.DeleteBookmark(1);
+            var result = controller.DeleteBookmark(1);
 
-            //test if Save() was called
+            Assert.AreEqual(result, HttpStatusCode.Accepted);
 
-            bookmarkRepo.Verify(m => m.Save());
+
         }
 
         [TestMethod]
@@ -239,17 +295,22 @@ namespace BookmarkManager.Tests
 
             var controller = new BookmarksController(bookmarkRepo.Object);
 
-            var bookmark = new Mock<Bookmark>();
-
-            bookmark.Object.Title = "test";
+            Bookmark sample;
 
             //get a bookmark successfully and test that Titles are the same
 
-            bookmarkRepo.Setup(x => x.GetBookmark("test")).Returns(new Bookmark { Title = "test" });
+            bookmarkRepo.Setup(x => x.GetBookmark("test")).Returns(sample = new Bookmark { Title = "test" });
 
             var result = controller.GetBookmark("test");
 
-            Assert.AreEqual(bookmark.Object.Title, result.Title);
+            bool id = sample.BookmarkId == result.BookmarkId;
+            bool author = sample.AuthorId == result.AuthorId;
+            bool date = sample.Date == result.Date;
+            bool link = sample.Link == result.Link;
+            bool title = sample.Title == result.Title;
+            bool users = sample.Users.Equals(result.Users);
+
+            Assert.IsTrue(id && author && date && link && title && users);
 
 
         }
@@ -263,15 +324,17 @@ namespace BookmarkManager.Tests
 
             var controller = new BookmarksController(bookmarkRepo.Object);
 
+            List<User> sample;
+
             //call FavouriteBookmark and return list of users
 
-            bookmarkRepo.Setup(x => x.FavouriteBookmark(1, 1)).Returns(new List<User>());
+            bookmarkRepo.Setup(x => x.FavouriteBookmark(1, 1)).Returns(sample = new List<User>());
 
-            controller.FavouriteBookmark(1, 1);
+            var result = controller.FavouriteBookmark(1, 1);
 
-            //test if Save() was called
+            bool users = sample.Equals(result);
 
-            bookmarkRepo.Verify(m => m.Save());
+            Assert.IsTrue(users);
 
         }
 
