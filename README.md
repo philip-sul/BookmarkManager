@@ -19,7 +19,7 @@ https://drive.google.com/open?id=1p1lZWidHQKgXLadloyIbcOD0VjrbHyfP
 <div>
   <img src="https://github.com/philip-sul/BookmarkManager/raw/master/images/get_bookmark.png" alt="get bookmark" height="100%" width="100%">
   <ul>
-    <li>Example of an API call by bookmark id.</li>
+    <li>Example of an API call by bookmark id</li>
   </ul>
 </div>
 
@@ -28,7 +28,7 @@ https://drive.google.com/open?id=1p1lZWidHQKgXLadloyIbcOD0VjrbHyfP
 <div>
   <img src="https://github.com/philip-sul/BookmarkManager/raw/master/images/get_bookmark_by_title.png" alt="get bookmark by title" height="50%" width="50%">
   <ul>
-    <li>API call by bookmark title.</li>
+    <li>API call by bookmark title</li>
   </ul>
 </div>
 
@@ -37,8 +37,8 @@ https://drive.google.com/open?id=1p1lZWidHQKgXLadloyIbcOD0VjrbHyfP
 <div>
   <img src="https://github.com/philip-sul/BookmarkManager/raw/master/images/generate_jwt_token.png" alt="generate jwt token" height="100%" width="100%">
   <ul>
-    <li>Generate token by logining in.</li>
-    <li>Token used for CRUD operations.</li>
+    <li>Generate token by logining in</li>
+    <li>Token used for CRUD operations</li>
   </ul>
 </div>
 
